@@ -8,11 +8,13 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
+import edu.kwon.frmk.common.share.spring.util.I18N;
+
 /**
  * A factory creating Vaadin component
  * 
- * @author bunlongtaing
- * @since v-0.0.1
+ * @author Bunlong Taing
+ * @since 0.0.1
  * @version 0.0.1
  */
 public class VaadinFactory {
@@ -29,7 +31,7 @@ public class VaadinFactory {
 	 * @return Label
 	 */
 	public static Label getLabel(String caption) {
-		return new Label(caption);
+		return new Label(I18N.string(caption));
 	}
 
 	// ============== Button ================== //
@@ -41,7 +43,7 @@ public class VaadinFactory {
 	 * @return Button
 	 */
 	public static Button getButton(String caption) {
-		Button btn = new Button(caption);
+		Button btn = new Button(I18N.string(caption));
 		btn.setStyleName(ValoTheme.BUTTON_SMALL);
 		return btn;
 	}
@@ -103,7 +105,10 @@ public class VaadinFactory {
 	 * @return
 	 */
 	public static TextField getTextField(String caption) {
-		return new TextField(caption);
+		TextField txt = new TextField(I18N.string(caption));
+		txt.addStyleName(ValoTheme.TEXTFIELD_SMALL);
+		txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		return txt;
 	}
 
 	/**
@@ -139,7 +144,10 @@ public class VaadinFactory {
 	 * @return
 	 */
 	public static PasswordField getPasswordField(String caption) {
-		return new PasswordField(caption);
+		PasswordField txt = new PasswordField(I18N.string(caption));
+		txt.addStyleName(ValoTheme.TEXTFIELD_SMALL);
+		txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		return txt;
 	}
 
 	/**

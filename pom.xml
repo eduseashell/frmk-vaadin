@@ -6,9 +6,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Vaadin framework</name>
 	<description>base on vaadiin 7.4.5</description>
-	
+
 	<properties>
 		<vaadin.version>7.4.5</vaadin.version>
+		<frmk-common-share-version>0.0.1-SNAPSHOT</frmk-common-share-version>
 	</properties>
 
 	<dependencies>
@@ -27,6 +28,13 @@
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
+
+		<!-- -->
+		<dependency>
+			<groupId>edu.kwon.frmk</groupId>
+			<artifactId>frmk-common-share</artifactId>
+			<version>${frmk-common-share-version}</version>
+		</dependency>
 	</dependencies>
-	
+
 </project>
