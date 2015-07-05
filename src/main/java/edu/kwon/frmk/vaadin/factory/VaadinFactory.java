@@ -1,14 +1,15 @@
 package edu.kwon.frmk.vaadin.factory;
 
-import com.vaadin.server.ThemeResource;
 import com.vaadin.server.Sizeable.Unit;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
-import edu.kwon.frmk.common.share.spring.util.I18N;
+import edu.kwon.frmk.common.share.spring.util.I18NUtil;
 
 /**
  * A factory creating Vaadin component
@@ -31,7 +32,7 @@ public class VaadinFactory {
 	 * @return Label
 	 */
 	public static Label getLabel(String caption) {
-		return new Label(I18N.string(caption));
+		return new Label(I18NUtil.string(caption));
 	}
 
 	// ============== Button ================== //
@@ -43,7 +44,7 @@ public class VaadinFactory {
 	 * @return Button
 	 */
 	public static Button getButton(String caption) {
-		Button btn = new Button(I18N.string(caption));
+		Button btn = new Button(I18NUtil.string(caption));
 		btn.setStyleName(ValoTheme.BUTTON_SMALL);
 		return btn;
 	}
@@ -105,7 +106,7 @@ public class VaadinFactory {
 	 * @return
 	 */
 	public static TextField getTextField(String caption) {
-		TextField txt = new TextField(I18N.string(caption));
+		TextField txt = new TextField(I18NUtil.string(caption));
 		txt.addStyleName(ValoTheme.TEXTFIELD_SMALL);
 		txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 		return txt;
@@ -144,7 +145,7 @@ public class VaadinFactory {
 	 * @return
 	 */
 	public static PasswordField getPasswordField(String caption) {
-		PasswordField txt = new PasswordField(I18N.string(caption));
+		PasswordField txt = new PasswordField(I18NUtil.string(caption));
 		txt.addStyleName(ValoTheme.TEXTFIELD_SMALL);
 		txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 		return txt;
@@ -173,6 +174,18 @@ public class VaadinFactory {
 		PasswordField txt = getPasswordField(caption, width);
 		txt.setRequired(required);
 		return txt;
+	}
+	
+	// ============== Image ================== //
+	
+	public static Image getImage(String path, String alt) {
+		return getImage(null, path, alt);
+	}
+	
+	public static Image getImage(String caption, String path, String alt) {
+		Image img = new Image(caption, new ThemeResource(path));
+		img.setAlternateText(alt);
+		return img;
 	}
 
 }
