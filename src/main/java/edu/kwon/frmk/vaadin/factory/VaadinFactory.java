@@ -184,7 +184,7 @@ public class VaadinFactory {
 	
 	public static Image getImage(String caption, String path, String alt) {
 		Image img = new Image(caption, new ThemeResource(path));
-		img.setAlternateText(alt);
+		img.setAlternateText(I18NUtil.string(alt));
 		return img;
 	}
 
