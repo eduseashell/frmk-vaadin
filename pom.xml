@@ -8,33 +8,79 @@
 	<description>base on vaadiin 7.4.5</description>
 
 	<properties>
-		<vaadin.version>7.4.5</vaadin.version>
+		<vaadin-version>7.4.5</vaadin-version>
+		<vaadin-spring-integration>3.1</vaadin-spring-integration>
 		<frmk-common-share-version>0.0.1-SNAPSHOT</frmk-common-share-version>
+		
+		<build-version>1.8</build-version>
+		<build-encoding>UTF-8</build-encoding>
 	</properties>
 
 	<dependencies>
+		<!-- Vaadin -->
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
-			<version>${vaadin.version}</version>
+			<version>${vaadin-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-client-compiled</artifactId>
-			<version>${vaadin.version}</version>
+			<version>${vaadin-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
-			<version>${vaadin.version}</version>
+			<version>${vaadin-version}</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiler</artifactId>
+			<version>${vaadin-version}</version>
+		</dependency> -->
+		
+		<!-- Spring Vaadin integration -->
+		<dependency>
+			<groupId>ru.xpoft.vaadin</groupId>
+			<artifactId>spring-vaadin-integration</artifactId>
+			<version>${vaadin-spring-integration}</version>
 		</dependency>
 
-		<!-- -->
+		<!-- frmk -->
 		<dependency>
 			<groupId>edu.kwon.frmk</groupId>
 			<artifactId>frmk-common-share</artifactId>
 			<version>${frmk-common-share-version}</version>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<!-- <resources>
+			<resource>
+				<directory>src/main/resources/</directory>
+			</resource>
+		</resources> -->
+		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>${build-version}</source>
+					<target>${build-version}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<encoding>${build-encoding}</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

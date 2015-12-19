@@ -6,7 +6,7 @@ import com.vaadin.ui.AbstractTextField;
 
 /**
  * Use to validate Vaadin component
- * @author bunlongtaing
+ * @author eduseashell
  * @since v-0.0.1
  * @version 0.0.1
  */

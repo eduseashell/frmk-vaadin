@@ -1,0 +1,9 @@
+@import "scss/default.scss";
+@import "scss/login.scss";
+@import "../valo/valo.scss";
+
+@mixin seashell {
+	@include default;
+	@include login-view;
+	@include valo;
+}
