@@ -5,6 +5,8 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
@@ -186,6 +188,17 @@ public class VaadinFactory {
 		Image img = new Image(caption, new ThemeResource(path));
 		img.setAlternateText(I18N.string(alt));
 		return img;
+	}
+	
+	// ============== Notification ================== //
+	
+	public static Notification getNotification(String caption, String desc) {
+		return getNotification(caption, desc, Type.HUMANIZED_MESSAGE);
+	}
+	
+	public static Notification getNotification(String caption, String desc, Type type) {
+		Notification noti = new Notification(caption, desc, type);
+		return noti;
 	}
 
 }

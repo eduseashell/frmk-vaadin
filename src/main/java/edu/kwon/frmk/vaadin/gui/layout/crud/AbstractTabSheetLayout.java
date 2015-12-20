@@ -3,10 +3,11 @@ package edu.kwon.frmk.vaadin.gui.layout.crud;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -15,7 +16,7 @@ import com.vaadin.ui.themes.ValoTheme;
  * @author eduseashell
  *
  */
-public abstract class AbstractTabSheetLayout extends VerticalViewLayout {
+public abstract class AbstractTabSheetLayout extends VerticalViewLayout implements CrudListener {
 
 	private static final long serialVersionUID = 4135133118354559654L;
 	
@@ -25,19 +26,26 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout {
 	private boolean needRefresh;
 	private boolean autoRemoveFormLayout;
 	
-	public AbstractTabSheetLayout() {
+	@PostConstruct
+	public void postConstruct() {
+		init();
+	}
+	
+	protected void init() {
 		setSpacing(true);
-//		formLayouts = new ArrayList<>();
+		setAutoRemoveFormLayout(true);
 		
-		tabsheet = new TabSheet();
-		tabsheet.setStyleName(ValoTheme.TABSHEET_FRAMED);
-		this.mainLayout = buildTableLayout();
-		if (mainLayout != null) {
-//			tableLayout.setMainPanel(this); TODO set main tab sheet to table layout
-		}
+		tabsheet = onCreateTabSheet();
+		this.mainLayout = buildMainLayout();
 		addMainLayout();
-		tabsheet.addSelectedTabChangeListener(getSelectedTabChangeListener());
 		addComponent(tabsheet);
+	}
+	
+	protected TabSheet onCreateTabSheet() {
+		TabSheet tabsheet = new TabSheet();
+		tabsheet.setStyleName(ValoTheme.TABSHEET_FRAMED);
+		tabsheet.addSelectedTabChangeListener(getSelectedTabChangeListener());
+		return tabsheet;
 	}
 	
 	/**
@@ -45,21 +53,17 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout {
 	 * @return
 	 */
 	protected SelectedTabChangeListener getSelectedTabChangeListener() {
-		return new SelectedTabChangeListener() {
-			private static final long serialVersionUID = 3506958302776470207L;
-			@Override
-			public void selectedTabChange(SelectedTabChangeEvent event) {
-				if (tabsheet.getSelectedTab() == mainLayout) {
-					if (autoRemoveFormLayout) {
-						removeFormLayouts();
-					}
-					if (isNeedRefresh()) {
-						onRefreshMainLayout();
-					}
-					addMainLayout();
+		return event -> {
+			if (tabsheet.getSelectedTab() == mainLayout) {
+				if (autoRemoveFormLayout) {
+					removeFormLayouts();
 				}
-				initSelectedTab(tabsheet.getSelectedTab());
+				if (isNeedRefresh()) {
+					onRefreshMainLayout();
+				}
+//				addMainLayout();
 			}
+			initSelectedTab(tabsheet.getSelectedTab());
 		};
 	}
 	
@@ -67,7 +71,9 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout {
 	 * Add Main Layout to the first tab
 	 */
 	protected void addMainLayout() {
-		tabsheet.addTab(mainLayout, mainLayout.getCaption(), mainLayout.getIcon());
+		if (mainLayout != null) {
+			tabsheet.addTab(mainLayout, mainLayout.getCaption(), mainLayout.getIcon());
+		}
 	}
 	
 	public void selectMainLayout() {
@@ -94,7 +100,7 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout {
 	 * @param formLayouts
 	 * @param selectedForm
 	 */
-	public void addFormLayouts(List<AbstractComponentContainer> formLayouts, AbstractComponentContainer selectedForm) {
+	public void setFormLayouts(List<AbstractComponentContainer> formLayouts, AbstractComponentContainer selectedForm) {
 		removeFormLayouts();
 		for (AbstractComponentContainer formLayout : formLayouts) {
 			tabsheet.addTab(formLayout, formLayout.getCaption(), formLayout.getIcon());
@@ -140,11 +146,28 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout {
 		this.needRefresh = needRefresh;
 	}
 	
-	protected abstract AbstractComponentContainer buildTableLayout();
-	protected abstract void onNewActionClicked();
-	protected abstract void onEditActionClicked(Long entityId);
-	protected abstract void onDeleteActionClicked(Long entityId);
+	public boolean isAutoRemoveFormLayout() {
+		return autoRemoveFormLayout;
+	}
+
+	public void setAutoRemoveFormLayout(boolean autoRemoveFormLayout) {
+		this.autoRemoveFormLayout = autoRemoveFormLayout;
+	}
+
+	protected abstract AbstractComponentContainer buildMainLayout();
 	protected abstract void onRefreshMainLayout();
 	protected abstract void initSelectedTab(Component selectedTab);
+
+	@Override
+	public void onNewActionClicked() {}
+
+	@Override
+	public void onEditActionClicked() {}
+
+	@Override
+	public void onDeleteActionClicked() {}
+
+	@Override
+	public void onSaveActionClicked() {}
 
 }
