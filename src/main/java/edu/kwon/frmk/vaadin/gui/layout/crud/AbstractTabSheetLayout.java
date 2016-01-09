@@ -23,6 +23,7 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout implemen
 	private TabSheet tabsheet;
 	private AbstractComponentContainer mainLayout;
 	private List<AbstractComponentContainer> formLayouts = new ArrayList<>();
+	
 	private boolean needRefresh;
 	private boolean autoRemoveFormLayout;
 	
@@ -36,9 +37,10 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout implemen
 		setAutoRemoveFormLayout(true);
 		
 		tabsheet = onCreateTabSheet();
+		addComponent(tabsheet);
+		
 		this.mainLayout = buildMainLayout();
 		addMainLayout();
-		addComponent(tabsheet);
 	}
 	
 	protected TabSheet onCreateTabSheet() {
@@ -61,7 +63,6 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout implemen
 				if (isNeedRefresh()) {
 					onRefreshMainLayout();
 				}
-//				addMainLayout();
 			}
 			initSelectedTab(tabsheet.getSelectedTab());
 		};
@@ -72,12 +73,12 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout implemen
 	 */
 	protected void addMainLayout() {
 		if (mainLayout != null) {
-			tabsheet.addTab(mainLayout, mainLayout.getCaption(), mainLayout.getIcon());
+			addLayout(mainLayout);
 		}
 	}
 	
 	public void selectMainLayout() {
-		tabsheet.setSelectedTab(0);
+		tabsheet.setSelectedTab(mainLayout);
 	}
 	
 	/**
@@ -86,9 +87,8 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout implemen
 	 */
 	public void addFormLayout(AbstractComponentContainer formLayout) {
 		if (!formLayouts.contains(formLayout)) {
-//			formLayout.setMainPanel(this); TODO formlayout
 			formLayouts.add(formLayout);
-			tabsheet.addTab(formLayout, formLayout.getCaption(), formLayout.getIcon());
+			addLayout(formLayout);
 		}
 		tabsheet.setSelectedTab(formLayout);
 		initSelectedTab(formLayout);
@@ -152,6 +152,10 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout implemen
 
 	public void setAutoRemoveFormLayout(boolean autoRemoveFormLayout) {
 		this.autoRemoveFormLayout = autoRemoveFormLayout;
+	}
+	
+	private void addLayout(AbstractComponentContainer layout) {
+		tabsheet.addTab(layout, layout.getCaption(), layout.getIcon());
 	}
 
 	protected abstract AbstractComponentContainer buildMainLayout();

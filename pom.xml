@@ -8,15 +8,25 @@
 	<description>base on vaadiin 7.4.5</description>
 
 	<properties>
+		<serlet-api-version>3.1.0</serlet-api-version>
 		<vaadin-version>7.4.5</vaadin-version>
 		<vaadin-spring-integration>3.1</vaadin-spring-integration>
 		<frmk-common-share-version>0.0.1-SNAPSHOT</frmk-common-share-version>
+		<frmk-common-data-version>0.0.1-SNAPSHOT</frmk-common-data-version>
 		
 		<build-version>1.8</build-version>
 		<build-encoding>UTF-8</build-encoding>
 	</properties>
 
 	<dependencies>
+		<!-- Servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${serlet-api-version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
 		<!-- Vaadin -->
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -51,6 +61,11 @@
 			<groupId>edu.kwon.frmk</groupId>
 			<artifactId>frmk-common-share</artifactId>
 			<version>${frmk-common-share-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.kwon.frmk</groupId>
+			<artifactId>frmk-common-data</artifactId>
+			<version>${frmk-common-data-version}</version>
 		</dependency>
 	</dependencies>
 	

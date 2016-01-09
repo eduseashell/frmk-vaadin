@@ -2,13 +2,22 @@ package edu.kwon.frmk.vaadin.gui.layout.crud;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.VerticalLayout;
 
-public abstract class AbstractFormLayout extends VerticalLayout implements CrudListener {
+import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntity;
+import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntityService;
+
+public abstract class AbstractFormLayout<T extends AuditEntity> extends VerticalLayout implements CrudListener {
 
 	private static final long serialVersionUID = 2830613554936017962L;
 	
+	@Autowired
+	protected AuditEntityService<T> service;
+	
+	protected T entity;
 	private AbstractTabSheetLayout tabSheet;
 	
 	@PostConstruct
@@ -41,11 +50,19 @@ public abstract class AbstractFormLayout extends VerticalLayout implements CrudL
 		}
 	}
 	
+	protected void onSaveAction() {
+		fillDataToEntity();
+		if (entity == null) {
+			throw new IllegalStateException("Entity cannot be null");
+		}
+		service.save(entity);
+	}
+	
 	protected abstract AbstractComponentContainer initGUI();
 	public abstract void assignValues(Long entityId);
+	protected abstract void fillDataToControls();
+	protected abstract void fillDataToEntity();
 	protected abstract boolean validate();
-	protected abstract void onSaveAction();
-	public abstract void reset();
 	
 	@Override
 	public void onNewActionClicked() { }
@@ -55,5 +72,9 @@ public abstract class AbstractFormLayout extends VerticalLayout implements CrudL
 
 	@Override
 	public void onDeleteActionClicked() { }
-
+	
+	public void reset() {
+		entity = null;
+	}
+	
 }

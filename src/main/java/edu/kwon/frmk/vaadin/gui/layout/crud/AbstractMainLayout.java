@@ -8,6 +8,7 @@ import com.vaadin.data.Item;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.VerticalLayout;
 
+import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntity;
 import edu.kwon.frmk.vaadin.component.select.Column;
 import edu.kwon.frmk.vaadin.component.select.SimpleTable;
 
@@ -16,7 +17,7 @@ import edu.kwon.frmk.vaadin.component.select.SimpleTable;
  * @author eduseashell
  *
  */
-public abstract class AbstractMainLayout<ID> extends VerticalLayout {
+public abstract class AbstractMainLayout<T extends AuditEntity> extends VerticalLayout {
 
 	private static final long serialVersionUID = 2678419846978098731L;
 	
@@ -26,7 +27,7 @@ public abstract class AbstractMainLayout<ID> extends VerticalLayout {
 	
 //	private Resource icon; TODO icon on Table Layout
 	private Item selectedItem;
-	private ID selectedItemId;
+	private Long selectedItemId;
 	
 	@PostConstruct
 	public void PostConstruct() {
@@ -74,21 +75,21 @@ public abstract class AbstractMainLayout<ID> extends VerticalLayout {
 		return table;
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected ItemClickListener getTableItemClickListener() {
 		return event -> {
 			selectedItem = event.getItem();
-			selectedItemId = (ID) event.getItemId();
+			selectedItemId = (Long) event.getItemId();
 			if (event.isDoubleClick()) {
 				onTableDoubleClick();
 			}
 		};
 	}
 	
-	protected <T> void renderTableRows(List<T> rows) {
+	protected void renderTableRows(List<T> rows) {
 		table.removeAllItems();
 		if (rows != null) {
-			rows.stream().forEach(row -> renderRow(table.addItem(getItemId(row)), row));
+			rows.stream()
+				.forEach(row -> renderRow(table.addItem(row.getId()), row));
 		}
 	}
 	
@@ -100,7 +101,7 @@ public abstract class AbstractMainLayout<ID> extends VerticalLayout {
 		return selectedItem;
 	}
 
-	public ID getSelectedItemId() {
+	public Long getSelectedItemId() {
 		return selectedItemId;
 	}
 	
@@ -112,7 +113,6 @@ public abstract class AbstractMainLayout<ID> extends VerticalLayout {
 	
 	protected abstract void onTableDoubleClick();
 	protected abstract List<Column> buildTableColumn();
-	public abstract <T> void renderRow(Item item, T row);
-	protected abstract <T> ID getItemId(T rowEntity);
+	public abstract void renderRow(Item item, T row);
 
 }
