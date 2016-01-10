@@ -2,8 +2,6 @@ package edu.kwon.frmk.vaadin.gui.layout.crud;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.VerticalLayout;
 
@@ -13,9 +11,6 @@ import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntityServic
 public abstract class AbstractFormLayout<T extends AuditEntity> extends VerticalLayout implements CrudListener {
 
 	private static final long serialVersionUID = 2830613554936017962L;
-	
-	@Autowired
-	protected AuditEntityService<T> service;
 	
 	protected T entity;
 	private AbstractTabSheetLayout tabSheet;
@@ -55,7 +50,11 @@ public abstract class AbstractFormLayout<T extends AuditEntity> extends Vertical
 		if (entity == null) {
 			throw new IllegalStateException("Entity cannot be null");
 		}
-		service.save(entity);
+		getService().save(entity);
+	}
+	
+	public void setMainTabSheet(AbstractTabSheetLayout tabSheet) {
+		this.tabSheet = tabSheet;
 	}
 	
 	protected abstract AbstractComponentContainer initGUI();
@@ -63,6 +62,7 @@ public abstract class AbstractFormLayout<T extends AuditEntity> extends Vertical
 	protected abstract void fillDataToControls();
 	protected abstract void fillDataToEntity();
 	protected abstract boolean validate();
+	protected abstract AuditEntityService<T> getService();
 	
 	@Override
 	public void onNewActionClicked() { }
