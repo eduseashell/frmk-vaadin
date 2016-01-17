@@ -3,7 +3,7 @@ package edu.kwon.frmk.vaadin.gui.main;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.UI;
 
-import edu.kwon.frmk.vaadin.util.VaadinHelper;
+import edu.kwon.frmk.vaadin.util.helper.VaadinHelper;
 
 /**
  * View navigation handler

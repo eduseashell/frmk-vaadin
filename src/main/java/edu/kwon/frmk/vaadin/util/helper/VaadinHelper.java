@@ -1,4 +1,4 @@
-package edu.kwon.frmk.vaadin.util;
+package edu.kwon.frmk.vaadin.util.helper;
 
 import com.vaadin.server.Page;
 

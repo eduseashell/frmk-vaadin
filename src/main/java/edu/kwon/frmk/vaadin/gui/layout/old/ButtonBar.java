@@ -5,7 +5,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 
-import edu.kwon.frmk.vaadin.factory.VaadinFactory;
+import edu.kwon.frmk.vaadin.component.factory.VaadinFactory;
 
 public class ButtonBar extends HorizontalLayout {
 

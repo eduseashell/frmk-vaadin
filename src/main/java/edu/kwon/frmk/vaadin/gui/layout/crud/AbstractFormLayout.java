@@ -2,18 +2,23 @@ package edu.kwon.frmk.vaadin.gui.layout.crud;
 
 import javax.annotation.PostConstruct;
 
+import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
 import com.vaadin.ui.AbstractComponentContainer;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.VerticalLayout;
 
 import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntity;
 import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntityService;
+import edu.kwon.frmk.common.share.spring.util.I18N;
+import edu.kwon.frmk.vaadin.component.factory.VaadinFactory;
 
 public abstract class AbstractFormLayout<T extends AuditEntity> extends VerticalLayout implements CrudListener {
 
 	private static final long serialVersionUID = 2830613554936017962L;
 	
 	protected T entity;
-	private AbstractTabSheetLayout tabSheet;
+	private AbstractTabSheetLayout<T> tabSheet;
 	
 	@PostConstruct
 	public void postConstruct() {
@@ -23,6 +28,7 @@ public abstract class AbstractFormLayout<T extends AuditEntity> extends Vertical
 	protected void init() {
 		setMargin(true);
 		setSpacing(true);
+		setIcon(FontAwesome.COLUMNS);
 		
 		buildDefaultCRUDBar();
 		addComponent(initGUI());
@@ -40,8 +46,12 @@ public abstract class AbstractFormLayout<T extends AuditEntity> extends Vertical
 		if (validate()) {
 			onSaveAction();
 			tabSheet.setNeedRefresh(Boolean.TRUE);
+			// TODO catch jpa exception
 		} else {
-			// TODO show error on save
+			String caption = I18N.string("save");
+			String desc = I18N.string("msg.error.save.entity");
+			VaadinFactory.getNotification(caption, desc, Type.WARNING_MESSAGE, FontAwesome.EXCLAMATION)
+				.show(Page.getCurrent());
 		}
 	}
 	
@@ -51,9 +61,13 @@ public abstract class AbstractFormLayout<T extends AuditEntity> extends Vertical
 			throw new IllegalStateException("Entity cannot be null");
 		}
 		getService().save(entity);
+		String caption = I18N.string("save");
+		String desc = I18N.string("msg.success.save");
+		VaadinFactory.getNotification(caption, desc)
+			.show(Page.getCurrent());
 	}
 	
-	public void setMainTabSheet(AbstractTabSheetLayout tabSheet) {
+	public void setMainTabSheet(AbstractTabSheetLayout<T> tabSheet) {
 		this.tabSheet = tabSheet;
 	}
 	

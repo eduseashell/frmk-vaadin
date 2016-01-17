@@ -1,6 +1,6 @@
 package edu.kwon.frmk.vaadin.gui.menu;
 
-import static edu.kwon.frmk.vaadin.util.VaadinHelper.setUriFragment;
+import static edu.kwon.frmk.vaadin.util.helper.VaadinHelper.setUriFragment;
 
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.themes.ValoTheme;

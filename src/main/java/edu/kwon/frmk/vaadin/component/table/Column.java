@@ -1,4 +1,4 @@
-package edu.kwon.frmk.vaadin.component.select;
+package edu.kwon.frmk.vaadin.component.table;
 
 import com.vaadin.ui.Table.Align;
 
@@ -11,11 +11,15 @@ public class Column {
 	private int width;
 	private boolean visible;
 	
-	public Column(String propertyId, String columnHeader, Class<?> clazz, Align align, int width) {
-		this(propertyId, columnHeader, clazz, align, width, true);
+	public Column(String propertyId, String columnHeader, Class<?> clazz, int width) {
+		this(propertyId, columnHeader, clazz, width, Align.LEFT, true);
 	}
 	
-	public Column(String propertyId, String columnHeader, Class<?> clazz, Align align, int width, boolean visible) {
+	public Column(String propertyId, String columnHeader, Class<?> clazz, int width, Align align) {
+		this(propertyId, columnHeader, clazz, width, align, true);
+	}
+	
+	public Column(String propertyId, String columnHeader, Class<?> clazz, int width, Align align, boolean visible) {
 		this.propertyId = propertyId;
 		this.columnHeader = columnHeader;
 		this.clazz = clazz;

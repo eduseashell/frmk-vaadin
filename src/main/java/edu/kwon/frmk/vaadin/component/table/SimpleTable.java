@@ -1,4 +1,4 @@
-package edu.kwon.frmk.vaadin.component.select;
+package edu.kwon.frmk.vaadin.component.table;
 
 import java.util.List;
 

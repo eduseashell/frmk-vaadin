@@ -7,17 +7,20 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickListener;
 
+import edu.kwon.frmk.common.data.jpa.repository.entities.root.RootEntity;
+import edu.kwon.frmk.common.data.jpa.repository.entities.root.RootSpecification;
 import edu.kwon.frmk.common.share.spring.util.I18N;
-import edu.kwon.frmk.vaadin.factory.VaadinFactory;
+import edu.kwon.frmk.vaadin.component.factory.VaadinFactory;
 
-public abstract class AbstractSearchPanel extends Panel {
+public abstract class AbstractSearchPanel<T extends RootEntity> extends Panel {
 
 	private static final long serialVersionUID = -1788720241817053229L;
 	
 	private Button btnSearch;
 	private Button btnReset;
+	
+	private SearchListener searchListener;
 	
 	public AbstractSearchPanel() {
 		init();
@@ -38,7 +41,12 @@ public abstract class AbstractSearchPanel extends Panel {
 		btnSearch = VaadinFactory.getButtonPrimary("search");
 		btnSearch.setIcon(FontAwesome.SEARCH);
 		btnSearch.setClickShortcut(KeyCode.ENTER);
-		btnSearch.addClickListener(onSearchActionClicked());
+		btnSearch.addClickListener(e -> {
+			SearchListener listener = searchListener;
+			if (listener != null) {
+				listener.onSearch();
+			}
+		});
 		
 		btnReset = VaadinFactory.getButton("reset");
 		btnReset.setIcon(FontAwesome.REFRESH);
@@ -52,8 +60,18 @@ public abstract class AbstractSearchPanel extends Panel {
 		return buttonLayout;
 	}
 	
+	public void setSearchListener(SearchListener listener) {
+		searchListener = listener;
+	}
+	
 	protected abstract Component initGUI();
-	protected abstract ClickListener onSearchActionClicked();
-	public abstract void reset();
+	protected abstract RootSpecification<T> getSpecification();
+	protected abstract void reset();
+	
+	public interface SearchListener {
+		
+		void onSearch();
+		
+	}
 	
 }

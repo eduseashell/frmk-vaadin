@@ -16,6 +16,8 @@
 		
 		<build-version>1.8</build-version>
 		<build-encoding>UTF-8</build-encoding>
+		<project.build.sourceEncoding>${build-encoding}</project.build.sourceEncoding>
+    	<project.reporting.outputEncoding>${build-encoding}</project.reporting.outputEncoding>
 	</properties>
 
 	<dependencies>

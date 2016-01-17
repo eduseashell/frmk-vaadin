@@ -16,7 +16,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.VerticalLayout;
 
-import edu.kwon.frmk.vaadin.component.select.SimpleTable;
+import edu.kwon.frmk.vaadin.component.table.SimpleTable;
 
 public abstract class AbstractListLayout extends VerticalLayout implements ItemClickListener {
 

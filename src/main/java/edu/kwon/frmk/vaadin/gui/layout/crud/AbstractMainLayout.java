@@ -6,26 +6,29 @@ import javax.annotation.PostConstruct;
 
 import com.vaadin.data.Item;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.VerticalLayout;
 
 import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntity;
-import edu.kwon.frmk.vaadin.component.select.Column;
-import edu.kwon.frmk.vaadin.component.select.SimpleTable;
+import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntityService;
+import edu.kwon.frmk.vaadin.component.table.Column;
+import edu.kwon.frmk.vaadin.component.table.SimpleTable;
+import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractSearchPanel.SearchListener;
 
 /**
  * AbstractMainLayout provide a table layout
  * @author eduseashell
  *
  */
-public abstract class AbstractMainLayout<T extends AuditEntity> extends VerticalLayout {
+public abstract class AbstractMainLayout<T extends AuditEntity> extends VerticalLayout implements SearchListener {
 
 	private static final long serialVersionUID = 2678419846978098731L;
 	
+	private AbstractTabSheetLayout<T> tabSheet;
 	private ActionBar crudBar;
-	private AbstractSearchPanel searchPanel;
+	private AbstractSearchPanel<T> searchPanel;
 	protected SimpleTable table;
 	
-//	private Resource icon; TODO icon on Table Layout
 	private Item selectedItem;
 	private Long selectedItemId;
 	
@@ -37,6 +40,7 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 	protected void init() {
 		setMargin(true);
 		setSpacing(true);
+		setIcon(FontAwesome.LIST_ALT);
 		
 		crudBar = onCreateActionBar();
 		if (crudBar != null) {
@@ -45,6 +49,7 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 		
 		searchPanel = onCreateSearchPanel();
 		if (searchPanel != null) {
+			searchPanel.setSearchListener(this);
 			addComponent(searchPanel);
 		}
 		
@@ -65,7 +70,7 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 	 * Override to provide custom search panel
 	 * @return
 	 */
-	protected AbstractSearchPanel onCreateSearchPanel() {
+	protected AbstractSearchPanel<T> onCreateSearchPanel() {
 		return null;// TODO default search layout
 	}
 	
@@ -93,16 +98,21 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 		}
 	}
 	
-	protected String getTableCaption() {
-		return getCaption();
+	protected void onTableDoubleClick() {
+		tabSheet.onEditActionClicked();
 	}
 	
-	public Item getSelectedItem() {
-		return selectedItem;
+	@Override
+	public void onSearch() {
+		refresh();
 	}
-
-	public Long getSelectedItemId() {
-		return selectedItemId;
+	
+	public void refresh() {
+		renderTableRows(getService().findAll(searchPanel.getSpecification()));
+	}
+	
+	public void setMainTabSheet(AbstractTabSheetLayout<T> tabSheet) {
+		this.tabSheet = tabSheet;
 	}
 	
 	public void setCrudListener(CrudListener listener) {
@@ -111,8 +121,12 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 		}
 	}
 	
-	protected abstract void onTableDoubleClick();
+	protected String getTableCaption() { return getCaption(); }
+	public Item getSelectedItem() { return selectedItem; }
+	public Long getSelectedItemId() { return selectedItemId; }
+	
 	protected abstract List<Column> buildTableColumn();
 	public abstract void renderRow(Item item, T row);
+	protected abstract AuditEntityService<T> getService();
 
 }

@@ -5,18 +5,24 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import com.vaadin.server.Page;
 import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.themes.ValoTheme;
 
+import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntity;
+import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntityService;
+import edu.kwon.frmk.common.share.spring.util.I18N;
+import edu.kwon.frmk.vaadin.component.factory.VaadinFactory;
+
 /**
  * A Tab sheet layout for simple crud operation 
  * @author eduseashell
  *
  */
-public abstract class AbstractTabSheetLayout extends VerticalViewLayout implements CrudListener {
+public abstract class AbstractTabSheetLayout<T extends AuditEntity> extends VerticalViewLayout implements CrudListener {
 
 	private static final long serialVersionUID = 4135133118354559654L;
 	
@@ -157,21 +163,43 @@ public abstract class AbstractTabSheetLayout extends VerticalViewLayout implemen
 	private void addLayout(AbstractComponentContainer layout) {
 		tabsheet.addTab(layout, layout.getCaption(), layout.getIcon());
 	}
-
-	protected abstract AbstractComponentContainer buildMainLayout();
-	protected abstract void onRefreshMainLayout();
-	protected abstract void initSelectedTab(Component selectedTab);
+	
+	protected void initSelectedTab(Component selectedTab) { }
 
 	@Override
 	public void onNewActionClicked() {}
 
 	@Override
-	public void onEditActionClicked() {}
+	public void onEditActionClicked() {
+		if (getSelectedItemId() == null) {
+			VaadinFactory.getNotification(I18N.string("edit"), I18N.string("msg.info.to.edit"))
+				.show(Page.getCurrent());
+		} else {
+			onEditItem(getSelectedItemId());
+		}
+	}
 
 	@Override
-	public void onDeleteActionClicked() {}
+	public void onDeleteActionClicked() {
+		if (getSelectedItemId() == null) {
+			VaadinFactory.getNotification(I18N.string("delete"), I18N.string("msg.info.to.delete"))
+				.show(Page.getCurrent());
+		} else {
+			onDeleteItem(getSelectedItemId());
+		}
+	}
+	
+	protected void onDeleteItem(Long id) {
+		getService().delete(id);
+	}
 
 	@Override
 	public void onSaveActionClicked() {}
+	
+	protected abstract AbstractComponentContainer buildMainLayout();
+	protected abstract void onEditItem(Long id);
+	protected abstract void onRefreshMainLayout();
+	protected abstract Long getSelectedItemId();
+	protected abstract AuditEntityService<T> getService();
 
 }

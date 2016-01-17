@@ -3,7 +3,7 @@ package edu.kwon.frmk.vaadin.gui.layout.crud;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 
-import edu.kwon.frmk.vaadin.factory.VaadinFactory;
+import edu.kwon.frmk.vaadin.component.factory.VaadinFactory;
 
 /**
  * 

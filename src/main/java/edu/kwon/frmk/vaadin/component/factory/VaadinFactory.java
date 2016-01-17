@@ -1,8 +1,13 @@
-package edu.kwon.frmk.vaadin.factory;
+package edu.kwon.frmk.vaadin.component.factory;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.vaadin.server.Resource;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -23,11 +28,17 @@ import edu.kwon.frmk.common.share.spring.util.I18N;
  * @version 0.0.1
  */
 public class VaadinFactory {
+	
+	private static final float TEXTFIELD_WIDTH = 180;
+	private static final float DATEFIELD_WIDTH = TEXTFIELD_WIDTH;
+	
+	private static final int NOTI_DELAY_MS = 3000;
 
-    private VaadinFactory() {
-    }
+    private VaadinFactory() { }
 
-    // ============== Label ================== //
+    //=================================================================
+    //							Label
+    //=================================================================
 
     /**
      * Create Label with caption
@@ -36,10 +47,16 @@ public class VaadinFactory {
      * @return Label
      */
     public static Label getLabel(String caption) {
-        return new Label(I18N.string(caption));
+    	return getLabel(caption, ContentMode.TEXT);
+    }
+    
+    public static Label getLabel(String caption, ContentMode mode) {
+    	return new Label(I18N.string(caption), mode);
     }
 
-    // ============== Button ================== //
+    //=================================================================
+    //							Button
+    //=================================================================
 
     /**
      * Create small button with caption
@@ -102,7 +119,9 @@ public class VaadinFactory {
         return btn;
     }
 
-    // ============== Textfield ================== //
+    //=================================================================
+    //							TextField
+    //=================================================================
     
     /**
      * Create Textfield with caption
@@ -110,10 +129,7 @@ public class VaadinFactory {
      * @return
      */
     public static TextField getTextField(String caption) {
-        TextField txt = new TextField(I18N.string(caption));
-        txt.addStyleName(ValoTheme.TEXTFIELD_SMALL);
-        txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-        return txt;
+        return getTextField(caption, TEXTFIELD_WIDTH);
     }
 
     /**
@@ -123,9 +139,11 @@ public class VaadinFactory {
      * @return
      */
     public static TextField getTextField(String caption, float width) {
-        TextField txt = getTextField(caption);
-        txt.setWidth(width, Unit.PIXELS);
-        return txt;
+        return getTextField(caption, width, false);
+    }
+    
+    public static TextField getTextField(String caption, boolean required) {
+    	return getTextField(caption, TEXTFIELD_WIDTH, required);
     }
 
     /**
@@ -136,12 +154,19 @@ public class VaadinFactory {
      * @return
      */
     public static TextField getTextField(String caption, float width, boolean required) {
-        TextField txt = getTextField(caption, width);
+        TextField txt = new TextField();
+        txt.addStyleName(ValoTheme.TEXTFIELD_SMALL);
+        txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+        txt.setNullRepresentation(StringUtils.EMPTY);
+        txt.setCaption(I18N.string(caption));
+        txt.setWidth(width, Unit.PIXELS);
         txt.setRequired(required);
         return txt;
     }
     
-    // ============== Passwordfield ================== //
+    //=================================================================
+    //						PasswordField
+    //=================================================================
     
     /**
      * Create passwordfield with caption
@@ -149,10 +174,7 @@ public class VaadinFactory {
      * @return
      */
     public static PasswordField getPasswordField(String caption) {
-        PasswordField txt = new PasswordField(I18N.string(caption));
-        txt.addStyleName(ValoTheme.TEXTFIELD_SMALL);
-        txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-        return txt;
+        return getPasswordField(caption, TEXTFIELD_WIDTH);
     }
 
     /**
@@ -162,9 +184,11 @@ public class VaadinFactory {
      * @return
      */
     public static PasswordField getPasswordField(String caption, float width) {
-        PasswordField txt = getPasswordField(caption);
-        txt.setWidth(width, Unit.PIXELS);
-        return txt;
+        return getPasswordField(caption, width, false);
+    }
+    
+    public static PasswordField getPasswordField(String caption, boolean required) {
+    	return getPasswordField(caption, TEXTFIELD_WIDTH, required);
     }
 
     /**
@@ -175,12 +199,18 @@ public class VaadinFactory {
      * @return
      */
     public static PasswordField getPasswordField(String caption, float width, boolean required) {
-        PasswordField txt = getPasswordField(caption, width);
+        PasswordField txt = new PasswordField(I18N.string(caption));
+        txt.addStyleName(ValoTheme.TEXTFIELD_SMALL);
+        txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+        txt.setNullRepresentation(StringUtils.EMPTY);
+        txt.setWidth(width, Unit.PIXELS);
         txt.setRequired(required);
         return txt;
     }
     
-    // ============== Image ================== //
+    //=================================================================
+    //							Image
+    //=================================================================
     
     public static Image getImage(String path, String alt) {
         return getImage(null, path, alt);
@@ -192,48 +222,73 @@ public class VaadinFactory {
         return img;
     }
     
-    // ============== Notification ================== //
+    //=================================================================
+    //							Notification
+    //=================================================================
     
     public static Notification getNotification(String caption, String desc) {
         return getNotification(caption, desc, Type.HUMANIZED_MESSAGE);
     }
     
     public static Notification getNotification(String caption, String desc, Type type) {
-        Notification noti = new Notification(caption, desc, type);
-        return noti;
+        return getNotification(caption, desc, type, null);
     }
     
-    // ============== DateField ================== //
+    public static Notification getNotification(String caption, String desc, Type type, Resource icon) {
+    	Notification noti = new Notification(caption, desc, type);
+    	noti.setDelayMsec(NOTI_DELAY_MS);
+    	noti.setIcon(icon);
+    	return noti;
+    }
+    
+    //=================================================================
+    //							DateField
+    //=================================================================
 
     public static DateField getDateField(String caption) {
-        DateField df = new DateField(I18N.string(caption));
-        df.addStyleName(ValoTheme.DATEFIELD_SMALL);
-        return df;
+        return getDateField(caption, DATEFIELD_WIDTH);
     }
     
     public static DateField getDateField(String caption, float width) {
-        DateField df = getDateField(caption);
-        df.setWidth(width, Unit.PIXELS);
-        return df;
+        return getDateField(caption, width, false);
+    }
+    
+    public static DateField getDateField(String caption, boolean required) {
+    	return getDateField(caption, DATEFIELD_WIDTH, required);
     }
     
     public static DateField getDateField(String caption, float width, boolean required) {
-        DateField df = getDateField(caption, width);
+        DateField df = new DateField(I18N.string(caption));
+        df.addStyleName(ValoTheme.DATEFIELD_SMALL);
+        df.setWidth(width, Unit.PIXELS);
         df.setRequired(required);
         return df;
     }
     
-    // ============== Panel ================== //
+    //=================================================================
+    //							Panel
+    //=================================================================
     
     public static Panel getPanel() {
-        Panel p = new Panel();
-        return p;
+        return getPanel(null);
     }
     
     public static Panel getPanel(String caption) {
-        Panel p = getPanel();
-        p.setCaption(I18N.string(caption));
+        Panel p = new Panel();
+        if (StringUtils.isNotBlank(caption)) p.setCaption(I18N.string(caption));
         return p;
+    }
+    
+    //=================================================================
+    //							CheckBox
+    //=================================================================
+    
+    public static CheckBox getCheckBox(String caption) {
+    	return getCheckBox(caption, false);
+    }
+    
+    public static CheckBox getCheckBox(String caption, boolean value) {
+    	return new CheckBox(I18N.string(caption), value);
     }
     
 }

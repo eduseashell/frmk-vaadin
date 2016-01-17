@@ -16,7 +16,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import edu.kwon.frmk.vaadin.factory.VaadinFactory;
+import edu.kwon.frmk.vaadin.component.factory.VaadinFactory;
 import edu.kwon.frmk.vaadin.util.SeashellTheme;
 
 /**
@@ -50,13 +50,12 @@ public class DefaultLoginPanel extends AbstractLoginView {
         fields.setSpacing(true);
         fields.addStyleName(SeashellTheme.LOGIN_FIELDS);
 
-        final TextField username = VaadinFactory.getTextField(getUserNameKey());
+        final TextField username = VaadinFactory.getTextField(getUserNameKey(), 200);
         username.setIcon(FontAwesome.USER);
         username.focus();
 
-        final PasswordField password = VaadinFactory.getPasswordField(getPasswordKey());
+        final PasswordField password = VaadinFactory.getPasswordField(getPasswordKey(), 200);
         password.setIcon(FontAwesome.LOCK);
-        password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
         final Button signin = VaadinFactory.getButtonPrimary(getSignInKey());
         signin.setClickShortcut(KeyCode.ENTER);
