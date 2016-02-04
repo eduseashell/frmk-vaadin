@@ -1,8 +1,9 @@
 package edu.kwon.frmk.vaadin.gui.main;
 
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.UI;
 
+import edu.kwon.frmk.common.data.jpa.repository.security.auth.AuthenticationService;
+import edu.kwon.frmk.common.share.spring.context.AppContext;
 import edu.kwon.frmk.vaadin.util.helper.VaadinHelper;
 
 /**
@@ -14,7 +15,8 @@ import edu.kwon.frmk.vaadin.util.helper.VaadinHelper;
 public class DefaultViewNavigatorAccessControl implements ViewChangeListener {
 
 	private static final long serialVersionUID = -3789628007247201335L;
-	
+
+	private AuthenticationService authService = AppContext.getBean(AuthenticationService.class);
 	private AbstractUI ui;
 	
 	public DefaultViewNavigatorAccessControl(AbstractUI ui) {
@@ -48,12 +50,7 @@ public class DefaultViewNavigatorAccessControl implements ViewChangeListener {
 	 * @return
 	 */
 	protected boolean isLogIn() {
-		Boolean isLogIn = (Boolean) UI.getCurrent().getSession().getAttribute("isLogin");
-		if (isLogIn == null) {
-			return false;
-		} else {
-			return isLogIn;
-		}
+		return authService.isAuthenticated();
 	}
 
 	@Override

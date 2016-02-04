@@ -40,6 +40,7 @@ public abstract class AbstractUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 		initControls();
+		setErrorHandler(new DefaultPageErrorHandler());
 		
 		topPanel = buildTopPanel();
 		if (topPanel != null) {
