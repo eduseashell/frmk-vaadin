@@ -3,6 +3,7 @@ package edu.kwon.frmk.vaadin.gui.main;
 import ru.xpoft.vaadin.DiscoveryNavigator;
 
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.navigator.ViewProvider;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Panel;
@@ -36,6 +37,8 @@ public abstract class AbstractUI extends UI {
 	private ComponentContainer topPanel;
 	private ComponentContainer mainPanel;
 	private ComponentContainer bottomPanel;
+	
+	private ViewProvider errorViewProvider;
 
 	@Override
 	protected void init(VaadinRequest request) {
@@ -47,14 +50,17 @@ public abstract class AbstractUI extends UI {
 			topPanelHolder.addComponent(topPanel);
 		}
 		
-		mainPanel = buildMainPanel();
 		DiscoveryNavigator navigator;
+		mainPanel = buildMainPanel();
 		if (mainPanel == null) {
 			navigator = new DiscoveryNavigator(this, mainPanel);
 		} else {
 			navigator = new DiscoveryNavigator(this, mainPanelHolder);
 		}
 		navigator.addViewChangeListener(getViewAccessControl());
+		if (getErrorViewProvider() != null) {
+			navigator.setErrorProvider(getErrorViewProvider());
+		}
 		
 		bottomPanel = buildBottomPanel();
 		if (bottomPanel != null) {
@@ -125,9 +131,17 @@ public abstract class AbstractUI extends UI {
 	protected ComponentContainer buildMainPanel() {
 		return new VerticalLayout();
 	}
+	
+	public ViewProvider getErrorViewProvider() {
+		return errorViewProvider;
+	}
+
+	public void setErrorViewProvider(ViewProvider errorViewProvider) {
+		this.errorViewProvider = errorViewProvider;
+	}
 
 	protected abstract VerticalLayout buildTopPanel();
 	
 	protected abstract VerticalLayout buildBottomPanel();
-	
+
 }

@@ -126,7 +126,7 @@ public abstract class AbstractListLayout extends VerticalLayout implements ItemC
 	}
 	
 	public void refresh() {
-		// TODO
+		// TODO refresh old list layout
 	}
 	
 	public void setMainPanel(AbstractTabsheet tabsheet) {

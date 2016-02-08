@@ -145,6 +145,10 @@ public class VaadinFactory {
     public static TextField getTextField(String caption, boolean required) {
     	return getTextField(caption, TEXTFIELD_WIDTH, required);
     }
+    
+    public static TextField getTextField(String caption, float width, Resource icon) {
+    	return getTextField(caption, width, false, icon);
+    }
 
     /**
      * Create Textfield with caption and width
@@ -154,13 +158,20 @@ public class VaadinFactory {
      * @return
      */
     public static TextField getTextField(String caption, float width, boolean required) {
-        TextField txt = new TextField();
+        return getTextField(caption, width, required, null);
+    }
+    
+    public static TextField getTextField(String caption, float width, boolean required, Resource icon) {
+    	TextField txt = new TextField();
         txt.addStyleName(ValoTheme.TEXTFIELD_SMALL);
-        txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
         txt.setNullRepresentation(StringUtils.EMPTY);
         txt.setCaption(I18N.string(caption));
         txt.setWidth(width, Unit.PIXELS);
         txt.setRequired(required);
+        if (icon != null) {
+        	txt.setIcon(icon);
+        	txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+        }
         return txt;
     }
     
@@ -190,6 +201,10 @@ public class VaadinFactory {
     public static PasswordField getPasswordField(String caption, boolean required) {
     	return getPasswordField(caption, TEXTFIELD_WIDTH, required);
     }
+    
+    public static PasswordField getPasswordField(String caption, float width, Resource icon) {
+    	return getPasswordField(caption, width, false, icon);
+    }
 
     /**
      * Create passwordfield with caption
@@ -199,12 +214,19 @@ public class VaadinFactory {
      * @return
      */
     public static PasswordField getPasswordField(String caption, float width, boolean required) {
-        PasswordField txt = new PasswordField(I18N.string(caption));
+        return getPasswordField(caption, width, required, null);
+    }
+    
+    public static PasswordField getPasswordField(String caption, float width, boolean required, Resource icon) {
+    	PasswordField txt = new PasswordField(I18N.string(caption));
         txt.addStyleName(ValoTheme.TEXTFIELD_SMALL);
-        txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
         txt.setNullRepresentation(StringUtils.EMPTY);
         txt.setWidth(width, Unit.PIXELS);
         txt.setRequired(required);
+        if (icon != null) {
+        	txt.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+        	txt.setIcon(icon);
+        }
         return txt;
     }
     

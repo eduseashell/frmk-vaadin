@@ -11,8 +11,12 @@ public class Column {
 	private int width;
 	private boolean visible;
 	
+	public Column(String propertyId, String columnHeader, Class<?> clazz) {
+		this(propertyId, columnHeader, clazz, 100);
+	}
+	
 	public Column(String propertyId, String columnHeader, Class<?> clazz, int width) {
-		this(propertyId, columnHeader, clazz, width, Align.LEFT, true);
+		this(propertyId, columnHeader, clazz, width, Align.LEFT);
 	}
 	
 	public Column(String propertyId, String columnHeader, Class<?> clazz, int width, Align align) {

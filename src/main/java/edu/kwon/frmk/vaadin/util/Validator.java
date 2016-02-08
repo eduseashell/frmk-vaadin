@@ -3,6 +3,7 @@ package edu.kwon.frmk.vaadin.util;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractSelect;
@@ -138,7 +139,7 @@ public class Validator {
 	public static boolean validateMinStringLength(AbstractTextField field, int min, String errorMsg) {
 		boolean valid = false;
 		int value = StringUtils.isNotEmpty(field.getValue()) ? field.getValue().length() : 0;
-		if (value > min) {
+		if (value >= min) {
 			valid = true;
 			field.setComponentError(null);
 		} else {
@@ -192,6 +193,39 @@ public class Validator {
 		boolean valid = false;
 		Date value = field.getValue();
 		if (value.before(date)) {
+			valid = true;
+			field.setComponentError(null);
+		} else {
+			field.setComponentError(new UserError(errorMsg));
+		}
+		return valid;
+	}
+	
+	//==========================================================
+	// 			E-Mail Validation
+	//==========================================================
+	
+	/**
+	 * Validate whether E-Mail is valid. Empty return true
+	 * @param field
+	 * @return
+	 */
+	public static boolean validateEMailTextField(AbstractTextField field) {
+		String msg = I18N.string("invalid.email.address");
+		return validateEMailTextField(field, msg);
+	}
+	
+	/**
+	 * Validate whether E-Mail is valid. Empty return true
+	 * @param field
+	 * @param errorMsg
+	 * @return
+	 */
+	public static boolean validateEMailTextField(AbstractTextField field, String errorMsg) {
+		boolean valid = false;
+		String value = field.getValue();
+		EmailValidator validator = EmailValidator.getInstance();
+		if (StringUtils.isEmpty(value) || validator.isValid(value)) {
 			valid = true;
 			field.setComponentError(null);
 		} else {
