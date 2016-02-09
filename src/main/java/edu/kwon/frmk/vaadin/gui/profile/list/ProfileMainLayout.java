@@ -17,6 +17,7 @@ import edu.kwon.frmk.common.data.jpa.repository.user.User;
 import edu.kwon.frmk.common.share.spring.util.I18N;
 import edu.kwon.frmk.vaadin.component.table.Column;
 import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractMainLayout;
+import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractSearchPanel;
 import edu.kwon.frmk.vaadin.util.helper.StringHelper;
 
 /**
@@ -30,6 +31,8 @@ public class ProfileMainLayout extends AbstractMainLayout<Profile> {
 	
 	@Autowired
 	private ProfileService profileService;
+	@Autowired
+	private ProfileSearchPanel searchPanel;
 	
 	@Override
 	protected void init() {
@@ -44,7 +47,7 @@ public class ProfileMainLayout extends AbstractMainLayout<Profile> {
 		columns.add(new Column(Profile.ID, I18N.string("id"), Long.class, 70));
 		columns.add(new Column(Profile.CODE, I18N.string("code"), String.class, 200));
 		columns.add(new Column(Profile.DESC, I18N.string("desc"), String.class, 300));
-		columns.add(new Column(Profile.ACTIVE, I18N.string("active"), String.class, 70));
+		columns.add(new Column(Profile.ACTIVE, I18N.string("status"), String.class, 70));
 		return columns;
 	}
 
@@ -55,6 +58,11 @@ public class ProfileMainLayout extends AbstractMainLayout<Profile> {
 		item.getItemProperty(Profile.CODE).setValue(profile.getCode());
 		item.getItemProperty(Profile.DESC).setValue(profile.getDesc());
 		item.getItemProperty(User.ACTIVE).setValue(StringHelper.toActiveMsg(profile.getActive()));
+	}
+	
+	@Override
+	protected AbstractSearchPanel<Profile> onCreateSearchPanel() {
+		return searchPanel;
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import edu.kwon.frmk.common.data.jpa.repository.profile.ProfileService;
 import edu.kwon.frmk.common.share.spring.util.I18N;
 import edu.kwon.frmk.vaadin.component.factory.VaadinFactory;
 import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractFormLayout;
+import edu.kwon.frmk.vaadin.util.Validator;
 
 /**
  * @author eduseashell
@@ -61,26 +62,43 @@ public class ProfileFormLayout extends AbstractFormLayout<Profile> {
 
 	@Override
 	public void assignValues(Long entityId) {
-		// TODO Auto-generated method stub
-		
+		reset();
+		if (entityId != null) {
+			entity = profileService.findById(entityId);
+			fillDataToControls();
+		}
 	}
 
 	@Override
 	protected void fillDataToControls() {
-		// TODO Auto-generated method stub
-		
+		txtCode.setValue(entity.getCode());
+		txtDesc.setValue(entity.getDesc());
+		cbActive.setValue(entity.getActive());
 	}
 
 	@Override
 	protected void fillDataToEntity() {
-		// TODO Auto-generated method stub
-		
+		if (entity == null) {
+			entity = new Profile();
+		}
+		entity.setCode(txtCode.getValue());
+		entity.setDesc(txtDesc.getValue());
+		entity.setActive(cbActive.getValue());
 	}
 
 	@Override
 	protected boolean validate() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean valid = true;
+		valid &= Validator.validateRequiredTextField(txtCode);
+		return valid;
+	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+		txtCode.setValue(null);
+		txtDesc.setValue(null);
+		cbActive.setValue(true);
 	}
 
 	@Override

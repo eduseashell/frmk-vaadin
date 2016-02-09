@@ -124,7 +124,15 @@ public class VaadinFactory {
     //=================================================================
     
     /**
-     * Create Textfield with caption
+     * Create TextField without caption
+     * @return
+     */
+    public static TextField getTextField() {
+    	return getTextField(null);
+    }
+    
+    /**
+     * Create TextField with caption
      * @param caption TextField caption
      * @return
      */
@@ -133,9 +141,9 @@ public class VaadinFactory {
     }
 
     /**
-     * Create Textfield with caption and width
+     * Create TextField with caption and width
      * @param caption
-     * @param width Textfield width in pixels
+     * @param width TextField width in pixels
      * @return
      */
     public static TextField getTextField(String caption, float width) {
@@ -151,10 +159,10 @@ public class VaadinFactory {
     }
 
     /**
-     * Create Textfield with caption and width
+     * Create TextField with caption and width
      * @param caption
-     * @param width Textfield width in pixels
-     * @param required True if the textfield is required, otherwise false
+     * @param width TextField width in pixels
+     * @param required True if the TextField is required, otherwise false
      * @return
      */
     public static TextField getTextField(String caption, float width, boolean required) {

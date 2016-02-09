@@ -1,5 +1,7 @@
 package edu.kwon.frmk.vaadin.gui.layout.crud;
 
+import java.io.Serializable;
+
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
@@ -68,7 +70,7 @@ public abstract class AbstractSearchPanel<T extends RootEntity> extends Panel {
 	protected abstract RootSpecification<T> getSpecification();
 	protected abstract void reset();
 	
-	public interface SearchListener {
+	public interface SearchListener extends Serializable {
 		
 		void onSearch();
 		

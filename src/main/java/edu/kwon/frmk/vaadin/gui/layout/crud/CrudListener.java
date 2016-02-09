@@ -1,6 +1,8 @@
 package edu.kwon.frmk.vaadin.gui.layout.crud;
 
-public interface CrudListener {
+import java.io.Serializable;
+
+public interface CrudListener extends Serializable {
 	
 	void onNewActionClicked();
 	void onEditActionClicked();
