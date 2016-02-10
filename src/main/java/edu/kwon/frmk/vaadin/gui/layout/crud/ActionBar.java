@@ -26,7 +26,7 @@ public class ActionBar extends HorizontalLayout {
 		return addButton(caption, null, listener);
 	}
 	
-	public Button addButton(String caption, Resource icon, ClickListener listener) {
+	public Button addButton(String caption, Resource icon, final ClickListener listener) {
 		Button btn = getButton(caption);
 		btn.addClickListener(listener);
 		btn.setIcon(icon);

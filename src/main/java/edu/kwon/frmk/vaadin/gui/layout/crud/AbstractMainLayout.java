@@ -1,5 +1,6 @@
 package edu.kwon.frmk.vaadin.gui.layout.crud;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,7 @@ import com.vaadin.ui.VerticalLayout;
 
 import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntity;
 import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntityService;
+import edu.kwon.frmk.common.data.jpa.repository.entities.root.RootSpecification;
 import edu.kwon.frmk.vaadin.component.table.Column;
 import edu.kwon.frmk.vaadin.component.table.SimpleTable;
 import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractSearchPanel.SearchListener;
@@ -24,13 +26,13 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 
 	private static final long serialVersionUID = 2678419846978098731L;
 	
-	private AbstractTabSheetLayout<T> tabSheet;
-	private ActionBar crudBar;
+	private CrudBar actionBar;
 	private AbstractSearchPanel<T> searchPanel;
 	protected SimpleTable table;
 	
 	private Item selectedItem;
 	private Long selectedItemId;
+	private TableDoubleClickListener tableDoubleClickListener;
 	
 	@PostConstruct
 	public void PostConstruct() {
@@ -40,11 +42,11 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 	protected void init() {
 		setMargin(true);
 		setSpacing(true);
-		setIcon(FontAwesome.LIST_ALT);
+		setIcon(FontAwesome.TABLE);
 		
-		crudBar = onCreateActionBar();
-		if (crudBar != null) {
-			addComponent(crudBar);
+		actionBar = onCreateActionBar();
+		if (actionBar != null) {
+			addComponent(actionBar);
 		}
 		
 		searchPanel = onCreateSearchPanel();
@@ -60,10 +62,14 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 		}
 	}
 	
-	protected ActionBar onCreateActionBar() {
+	protected CrudBar onCreateActionBar() {
 		CrudBar crudBar = new CrudBar();
 		crudBar.addDefaultCrudBar();
 		return crudBar;
+	}
+	
+	public CrudBar getActionBar() {
+		return actionBar;
 	}
 	
 	/**
@@ -85,7 +91,10 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 			selectedItem = event.getItem();
 			selectedItemId = (Long) event.getItemId();
 			if (event.isDoubleClick()) {
-				onTableDoubleClick();
+				AbstractMainLayout.TableDoubleClickListener listener = tableDoubleClickListener;
+				if (listener != null) {
+					listener.onTableDoubleClick(selectedItemId);
+				}
 			}
 		};
 	}
@@ -98,27 +107,31 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 		}
 	}
 	
-	protected void onTableDoubleClick() {
-		tabSheet.onEditActionClicked();
-	}
-	
 	@Override
 	public void onSearch() {
 		refresh();
 	}
 	
 	public void refresh() {
-		renderTableRows(getService().findAll(searchPanel.getSpecification()));
-	}
-	
-	public void setMainTabSheet(AbstractTabSheetLayout<T> tabSheet) {
-		this.tabSheet = tabSheet;
-	}
-	
-	public void setCrudListener(CrudListener listener) {
-		if (crudBar instanceof CrudBar) {
-			((CrudBar) crudBar).setCrudListener(listener);
+		RootSpecification<T> spec;
+		if (searchPanel != null) {
+			spec = searchPanel.getSpecification();
+		} else {
+			spec = getSpecification();
 		}
+		renderTableRows(getService().findAll(spec));
+	}
+	
+	protected RootSpecification<T> getSpecification() {
+		return new RootSpecification<T>();
+	}
+	
+	public TableDoubleClickListener getTableDoubleClickListener() {
+		return tableDoubleClickListener;
+	}
+
+	public void setTableDoubleClickListener(final TableDoubleClickListener tableDoubleClickListener) {
+		this.tableDoubleClickListener = tableDoubleClickListener;
 	}
 	
 	protected String getTableCaption() { return getCaption(); }
@@ -128,5 +141,11 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 	protected abstract List<Column> buildTableColumn();
 	public abstract void renderRow(Item item, T row);
 	protected abstract AuditEntityService<T> getService();
+	
+	public interface TableDoubleClickListener extends Serializable {
+		
+		void onTableDoubleClick(Long selectedItemId);
+		
+	}
 
 }

@@ -10,9 +10,11 @@ import com.vaadin.ui.AbstractComponentContainer;
 
 import edu.kwon.frmk.common.data.jpa.repository.user.User;
 import edu.kwon.frmk.common.data.jpa.repository.user.UserService;
+import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractMainLayout.TableDoubleClickListener;
 import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractTabSheetLayout;
 import edu.kwon.frmk.vaadin.gui.user.form.UserFormLayout;
 import edu.kwon.frmk.vaadin.gui.user.list.UserMainLayout;
+import edu.kwon.frmk.vaadin.gui.user.profile.list.UserProfileMainFormLayout;
 
 /**
  * User Tab Sheet
@@ -22,7 +24,7 @@ import edu.kwon.frmk.vaadin.gui.user.list.UserMainLayout;
 @org.springframework.stereotype.Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 @VaadinView(UserTabSheet.VIEW_NAME)
-public class UserTabSheet extends AbstractTabSheetLayout<User> {
+public class UserTabSheet extends AbstractTabSheetLayout<User> implements TableDoubleClickListener {
 
 	private static final long serialVersionUID = -5259413296535848102L;
 	
@@ -34,17 +36,21 @@ public class UserTabSheet extends AbstractTabSheetLayout<User> {
 	private UserMainLayout mainLayout;
 	@Autowired
 	private UserFormLayout formLayout;
+	@Autowired
+	private UserProfileMainFormLayout profileLayout;
 
 	@Override
 	public void postConstruct() {
 		super.postConstruct();
-		mainLayout.setMainTabSheet(this);
+		mainLayout.setTableDoubleClickListener(this);
 		formLayout.setMainTabSheet(this);
 	}
 	
 	@Override
 	protected AbstractComponentContainer buildMainLayout() {
-		mainLayout.setCrudListener(this);
+		mainLayout.getActionBar().setNewClickListener(this);
+		mainLayout.getActionBar().setEditClickListener(this);
+		mainLayout.getActionBar().setDeleteClickListener(this);
 		return mainLayout;
 	}
 
@@ -57,7 +63,10 @@ public class UserTabSheet extends AbstractTabSheetLayout<User> {
 	@Override
 	protected void onEditItem(Long id) {
 		formLayout.assignValues(id);
+//		profileLayout.assi
 		addFormLayout(formLayout);
+		addFormLayout(profileLayout);
+		setSelectedTab(formLayout);
 	}
 	
 	@Override
@@ -73,6 +82,11 @@ public class UserTabSheet extends AbstractTabSheetLayout<User> {
 	@Override
 	protected UserService getService() {
 		return userService;
+	}
+
+	@Override
+	public void onTableDoubleClick(Long selectedItemId) {
+		onEditItem(selectedItemId);
 	}
 
 }

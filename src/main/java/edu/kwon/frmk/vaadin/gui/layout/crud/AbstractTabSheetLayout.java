@@ -16,13 +16,16 @@ import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntity;
 import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntityService;
 import edu.kwon.frmk.common.share.spring.util.I18N;
 import edu.kwon.frmk.vaadin.component.factory.VaadinFactory;
+import edu.kwon.frmk.vaadin.gui.layout.crud.listener.DeleteClickListener;
+import edu.kwon.frmk.vaadin.gui.layout.crud.listener.EditClickListener;
+import edu.kwon.frmk.vaadin.gui.layout.crud.listener.NewClickListener;
 
 /**
  * A Tab sheet layout for simple crud operation 
  * @author eduseashell
  *
  */
-public abstract class AbstractTabSheetLayout<T extends AuditEntity> extends VerticalViewLayout implements CrudListener {
+public abstract class AbstractTabSheetLayout<T extends AuditEntity> extends VerticalViewLayout implements EditClickListener, DeleteClickListener, NewClickListener {
 
 	private static final long serialVersionUID = 4135133118354559654L;
 	
@@ -84,7 +87,7 @@ public abstract class AbstractTabSheetLayout<T extends AuditEntity> extends Vert
 	}
 	
 	public void selectMainLayout() {
-		tabsheet.setSelectedTab(mainLayout);
+		setSelectedTab(mainLayout);
 	}
 	
 	/**
@@ -96,7 +99,7 @@ public abstract class AbstractTabSheetLayout<T extends AuditEntity> extends Vert
 			formLayouts.add(formLayout);
 			addLayout(formLayout);
 		}
-		tabsheet.setSelectedTab(formLayout);
+		setSelectedTab(formLayout);
 		initSelectedTab(formLayout);
 	}
 	
@@ -116,7 +119,7 @@ public abstract class AbstractTabSheetLayout<T extends AuditEntity> extends Vert
 			if (selectedForm == null) {
 				selectedForm = formLayouts.get(0);
 			}
-			tabsheet.setSelectedTab(selectedForm);
+			setSelectedTab(selectedForm);
 			initSelectedTab(selectedForm);
 		}
 	}
@@ -164,10 +167,11 @@ public abstract class AbstractTabSheetLayout<T extends AuditEntity> extends Vert
 		tabsheet.addTab(layout, layout.getCaption(), layout.getIcon());
 	}
 	
+	public void setSelectedTab(AbstractComponentContainer selectedTab) {
+		tabsheet.setSelectedTab(selectedTab);
+	}
+	
 	protected void initSelectedTab(Component selectedTab) { }
-
-	@Override
-	public void onNewActionClicked() {}
 
 	@Override
 	public void onEditActionClicked() {
@@ -192,9 +196,6 @@ public abstract class AbstractTabSheetLayout<T extends AuditEntity> extends Vert
 	protected void onDeleteItem(Long id) {
 		getService().delete(id);
 	}
-
-	@Override
-	public void onSaveActionClicked() {}
 	
 	protected abstract AbstractComponentContainer buildMainLayout();
 	protected abstract void onEditItem(Long id);

@@ -13,7 +13,6 @@ import com.vaadin.data.Item;
 import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntityService;
 import edu.kwon.frmk.common.data.jpa.repository.profile.Profile;
 import edu.kwon.frmk.common.data.jpa.repository.profile.ProfileService;
-import edu.kwon.frmk.common.data.jpa.repository.user.User;
 import edu.kwon.frmk.common.share.spring.util.I18N;
 import edu.kwon.frmk.vaadin.component.table.Column;
 import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractMainLayout;
@@ -38,7 +37,6 @@ public class ProfileMainLayout extends AbstractMainLayout<Profile> {
 	protected void init() {
 		super.init();
 		setCaption(I18N.string("profiles"));
-//		setIcon(FontAwesome.USERS);
 	}
 
 	@Override
@@ -54,10 +52,10 @@ public class ProfileMainLayout extends AbstractMainLayout<Profile> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void renderRow(Item item, Profile profile) {
-		item.getItemProperty(User.ID).setValue(profile.getId());
+		item.getItemProperty(Profile.ID).setValue(profile.getId());
 		item.getItemProperty(Profile.CODE).setValue(profile.getCode());
 		item.getItemProperty(Profile.DESC).setValue(profile.getDesc());
-		item.getItemProperty(User.ACTIVE).setValue(StringHelper.toActiveMsg(profile.getActive()));
+		item.getItemProperty(Profile.ACTIVE).setValue(StringHelper.toActiveMsg(profile.getActive()));
 	}
 	
 	@Override

@@ -39,7 +39,6 @@ public class ProfileFormLayout extends AbstractFormLayout<Profile> {
 	protected void init() {
 		super.init();
 		setCaption(I18N.string("profile"));
-//		setIcon(FontAwesome.USER);
 	}
 
 	@Override

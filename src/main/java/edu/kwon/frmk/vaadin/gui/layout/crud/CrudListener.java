@@ -8,5 +8,7 @@ public interface CrudListener extends Serializable {
 	void onEditActionClicked();
 	void onDeleteActionClicked();
 	void onSaveActionClicked();
+	void onCancelActionClicked();
+	void onRefreshActionClicked();
 
 }

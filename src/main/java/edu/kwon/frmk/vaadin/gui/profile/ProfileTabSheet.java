@@ -11,6 +11,7 @@ import com.vaadin.ui.AbstractComponentContainer;
 import edu.kwon.frmk.common.data.jpa.repository.entities.audit.AuditEntityService;
 import edu.kwon.frmk.common.data.jpa.repository.profile.Profile;
 import edu.kwon.frmk.common.data.jpa.repository.profile.ProfileService;
+import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractMainLayout.TableDoubleClickListener;
 import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractTabSheetLayout;
 import edu.kwon.frmk.vaadin.gui.profile.form.ProfileFormLayout;
 import edu.kwon.frmk.vaadin.gui.profile.list.ProfileMainLayout;
@@ -21,7 +22,7 @@ import edu.kwon.frmk.vaadin.gui.profile.list.ProfileMainLayout;
 @org.springframework.stereotype.Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 @VaadinView(ProfileTabSheet.VIEW_NAME)
-public class ProfileTabSheet extends AbstractTabSheetLayout<Profile> {
+public class ProfileTabSheet extends AbstractTabSheetLayout<Profile> implements TableDoubleClickListener {
 
 	private static final long serialVersionUID = 6348434881741030672L;
 	public static final String VIEW_NAME = "views/profiles";
@@ -36,13 +37,15 @@ public class ProfileTabSheet extends AbstractTabSheetLayout<Profile> {
 	@Override
 	public void postConstruct() {
 		super.postConstruct();
-		mainLayout.setMainTabSheet(this);
+		mainLayout.setTableDoubleClickListener(this);
 		formLayout.setMainTabSheet(this);
 	}
 
 	@Override
 	protected AbstractComponentContainer buildMainLayout() {
-		mainLayout.setCrudListener(this);
+		mainLayout.getActionBar().setNewClickListener(this);
+		mainLayout.getActionBar().setEditClickListener(this);
+		mainLayout.getActionBar().setDeleteClickListener(this);
 		return mainLayout;
 	}
 	
@@ -71,6 +74,11 @@ public class ProfileTabSheet extends AbstractTabSheetLayout<Profile> {
 	@Override
 	protected AuditEntityService<Profile> getService() {
 		return profileService;
+	}
+
+	@Override
+	public void onTableDoubleClick(Long selectedItemId) {
+		onEditItem(selectedItemId);
 	}
 
 }
