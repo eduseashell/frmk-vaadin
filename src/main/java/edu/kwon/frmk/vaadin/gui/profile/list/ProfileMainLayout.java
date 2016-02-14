@@ -17,6 +17,7 @@ import edu.kwon.frmk.common.share.spring.util.I18N;
 import edu.kwon.frmk.vaadin.component.table.Column;
 import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractMainLayout;
 import edu.kwon.frmk.vaadin.gui.layout.crud.AbstractSearchPanel;
+import edu.kwon.frmk.vaadin.gui.layout.search.panel.SimpleSearchPanel;
 import edu.kwon.frmk.vaadin.util.helper.StringHelper;
 
 /**
@@ -31,7 +32,7 @@ public class ProfileMainLayout extends AbstractMainLayout<Profile> {
 	@Autowired
 	private ProfileService profileService;
 	@Autowired
-	private ProfileSearchPanel searchPanel;
+	private SimpleSearchPanel<Profile> searchPanel;
 	
 	@Override
 	protected void init() {

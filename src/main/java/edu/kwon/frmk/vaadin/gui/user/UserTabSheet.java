@@ -51,6 +51,7 @@ public class UserTabSheet extends AbstractTabSheetLayout<User> implements TableD
 		mainLayout.getActionBar().setNewClickListener(this);
 		mainLayout.getActionBar().setEditClickListener(this);
 		mainLayout.getActionBar().setDeleteClickListener(this);
+		mainLayout.getActionBar().setRefreshClickListener(this);
 		return mainLayout;
 	}
 
@@ -63,7 +64,7 @@ public class UserTabSheet extends AbstractTabSheetLayout<User> implements TableD
 	@Override
 	protected void onEditItem(Long id) {
 		formLayout.assignValues(id);
-//		profileLayout.assi
+		profileLayout.assignValues(id);
 		addFormLayout(formLayout);
 		addFormLayout(profileLayout);
 		setSelectedTab(formLayout);

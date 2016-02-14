@@ -72,14 +72,6 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 		return actionBar;
 	}
 	
-	/**
-	 * Override to provide custom search panel
-	 * @return
-	 */
-	protected AbstractSearchPanel<T> onCreateSearchPanel() {
-		return null;// TODO default search layout
-	}
-	
 	protected SimpleTable onCreateTable() {
 		SimpleTable table = new SimpleTable(getTableCaption());
 		table.addColumns(buildTableColumn());
@@ -140,6 +132,7 @@ public abstract class AbstractMainLayout<T extends AuditEntity> extends Vertical
 	
 	protected abstract List<Column> buildTableColumn();
 	public abstract void renderRow(Item item, T row);
+	protected abstract AbstractSearchPanel<T> onCreateSearchPanel();
 	protected abstract AuditEntityService<T> getService();
 	
 	public interface TableDoubleClickListener extends Serializable {

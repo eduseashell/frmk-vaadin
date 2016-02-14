@@ -72,11 +72,14 @@
 	</dependencies>
 	
 	<build>
-		<!-- <resources>
+		<resources>
 			<resource>
-				<directory>src/main/resources/</directory>
+				<directory>src/main/resources/vaadin</directory>
 			</resource>
-		</resources> -->
+			<resource>
+				<directory>src/main/resources/i18n</directory>
+			</resource>
+		</resources>
 		
 		<plugins>
 			<plugin>

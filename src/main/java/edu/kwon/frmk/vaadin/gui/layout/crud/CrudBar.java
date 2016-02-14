@@ -31,6 +31,7 @@ public class CrudBar extends ActionBar {
 		addNewButton("new");
 		addEditButton("edit");
 		addDeleteButton("delete");
+		addRefreshButton("refresh");
 		return this;
 	}
 	

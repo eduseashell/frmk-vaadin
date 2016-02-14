@@ -19,13 +19,14 @@ import edu.kwon.frmk.vaadin.component.factory.VaadinFactory;
 import edu.kwon.frmk.vaadin.gui.layout.crud.listener.DeleteClickListener;
 import edu.kwon.frmk.vaadin.gui.layout.crud.listener.EditClickListener;
 import edu.kwon.frmk.vaadin.gui.layout.crud.listener.NewClickListener;
+import edu.kwon.frmk.vaadin.gui.layout.crud.listener.RefreshClickListener;
 
 /**
  * A Tab sheet layout for simple crud operation 
  * @author eduseashell
  *
  */
-public abstract class AbstractTabSheetLayout<T extends AuditEntity> extends VerticalViewLayout implements EditClickListener, DeleteClickListener, NewClickListener {
+public abstract class AbstractTabSheetLayout<T extends AuditEntity> extends VerticalViewLayout implements EditClickListener, DeleteClickListener, NewClickListener, RefreshClickListener {
 
 	private static final long serialVersionUID = 4135133118354559654L;
 	
@@ -190,11 +191,17 @@ public abstract class AbstractTabSheetLayout<T extends AuditEntity> extends Vert
 				.show(Page.getCurrent());
 		} else {
 			onDeleteItem(getSelectedItemId());
+			onRefreshMainLayout();
 		}
 	}
 	
 	protected void onDeleteItem(Long id) {
 		getService().delete(id);
+	}
+	
+	@Override
+	public void onRefreshActionClicked() {
+		onRefreshMainLayout();
 	}
 	
 	protected abstract AbstractComponentContainer buildMainLayout();

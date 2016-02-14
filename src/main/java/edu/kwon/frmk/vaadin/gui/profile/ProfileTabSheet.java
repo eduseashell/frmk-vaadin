@@ -46,6 +46,7 @@ public class ProfileTabSheet extends AbstractTabSheetLayout<Profile> implements 
 		mainLayout.getActionBar().setNewClickListener(this);
 		mainLayout.getActionBar().setEditClickListener(this);
 		mainLayout.getActionBar().setDeleteClickListener(this);
+		mainLayout.getActionBar().setRefreshClickListener(this);
 		return mainLayout;
 	}
 	

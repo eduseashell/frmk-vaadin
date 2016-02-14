@@ -65,6 +65,7 @@ public abstract class AbstractFormWindow<T extends AuditEntity> extends Window i
 			if (preLst != null) preLst.preSaveAction();
 			
 			onSaveAction();
+			close();
 			
 			PostSaveListener postLst = postSaveListener;
 			if (postLst != null) postLst.postSaveAction();
@@ -101,6 +102,7 @@ public abstract class AbstractFormWindow<T extends AuditEntity> extends Window i
 	}
 	
 	public void show() {
+		center();
 		UI.getCurrent().addWindow(this);
 	}
 	

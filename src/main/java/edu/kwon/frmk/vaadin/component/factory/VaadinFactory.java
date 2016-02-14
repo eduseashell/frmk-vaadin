@@ -1,5 +1,8 @@
 package edu.kwon.frmk.vaadin.component.factory;
 
+import java.util.List;
+import java.util.function.Function;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.vaadin.server.Resource;
@@ -18,7 +21,11 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
+import edu.kwon.frmk.common.data.jpa.repository.entities.root.RootEntity;
+import edu.kwon.frmk.common.data.jpa.repository.entities.root.RootSpecification;
 import edu.kwon.frmk.common.share.spring.util.I18N;
+import edu.kwon.frmk.vaadin.component.combobox.ComboBox;
+import edu.kwon.frmk.vaadin.component.combobox.ComboBox.RenderingListener;
 
 /**
  * A factory creating Vaadin component
@@ -31,6 +38,7 @@ public class VaadinFactory {
 	
 	private static final float TEXTFIELD_WIDTH = 180;
 	private static final float DATEFIELD_WIDTH = TEXTFIELD_WIDTH;
+	private static final float COMBOBOX_WIDTH = TEXTFIELD_WIDTH;
 	
 	private static final int NOTI_DELAY_MS = 3000;
 
@@ -319,6 +327,32 @@ public class VaadinFactory {
     
     public static CheckBox getCheckBox(String caption, boolean value) {
     	return new CheckBox(I18N.string(caption), value);
+    }
+    
+    //=================================================================
+    //							ComboBox
+    //=================================================================
+    
+    public static <T extends RootEntity> ComboBox<T> getComboBox() {
+    	return getComboBox(null);
+    }
+    
+    public static <T extends RootEntity> ComboBox<T> getComboBox(String captionKey) {
+    	ComboBox<T> cbo = new ComboBox<T>(captionKey);
+    	cbo.setWidth(COMBOBOX_WIDTH, Unit.PIXELS);
+    	return cbo;
+    }
+    
+    public static <T extends RootEntity> ComboBox<T> getComboBox(String captionKey, Function<RootSpecification<T>, List<T>> loader, RenderingListener<T> renderingListener) {
+    	ComboBox<T> cbo = new ComboBox<T>(captionKey, loader, renderingListener);
+    	cbo.setWidth(COMBOBOX_WIDTH, Unit.PIXELS);
+    	return cbo;
+    }
+    
+    public static <T extends RootEntity> ComboBox<T> getComboBox(String captionKey, List<T> values, RenderingListener<T> renderingListener) {
+    	ComboBox<T> cbo = new ComboBox<T>(captionKey, values, renderingListener);
+    	cbo.setWidth(COMBOBOX_WIDTH, Unit.PIXELS);
+    	return cbo;
     }
     
 }
